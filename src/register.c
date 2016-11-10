@@ -132,6 +132,9 @@ _register_field(struct pbc_rmessage * field, struct _field * f, struct _stringpo
 	f->id = pbc_rmessage_integer(field, "number", 0 , 0);
 	f->type = pbc_rmessage_integer(field, "type", 0 , 0);	// enum
 	f->label = pbc_rmessage_integer(field, "label", 0, 0) - 1; // LABEL_OPTIONAL = 0
+	if (f->label == LABEL_REPEATED) { // proto3 repeated defaule use pack. we use proto3. just hack!!
+		f->label = LABEL_PACKED;
+	}
 	if (pbc_rmessage_size(field , "options") > 0) {
 		struct pbc_rmessage * options = pbc_rmessage_message(field, "options" , 0);
 		int packed = pbc_rmessage_integer(options , "packed" , 0 , NULL);
